@@ -41,9 +41,11 @@ def main():
     SCREEN.fill(BLACK)
     add_text.add_text(SCREEN, "Wordle")
     createBoxesForGuesses()
+    fillAlphabet()
     while True:
         pos = pygame.mouse.get_pos()
         printBoxesForGuesses()
+        printAlphabet()
         pygame.display.update()
         for event in pygame.event.get():
                 # if the user wants to quit, close pygame
@@ -165,7 +167,34 @@ def fillAlphabet():
     blockHeight = 40
     x = 105
     y = 420
+    for count in range (0, 10):
+        rect = pygame.Rect(x, y, blockWidth, blockHeight)
+        ALPHABET.append(rect)
+        x = x + 40
+    x = 125
+    y = 470
+    for count in range (0, 9):
+        rect = pygame.Rect(x, y, blockWidth, blockHeight)
+        ALPHABET.append(rect)
+        x = x + 40
+    x = 105
+    y = 520
+    rect = pygame.Rect(x, y, 50, blockHeight)
+    ALPHABET.append(rect)
+    x = x + 60
+    for count in range (0, 7):
+        rect = pygame.Rect(x, y, blockWidth, blockHeight)
+        ALPHABET.append(rect)
+        x = x + 40
+    rect = pygame.Rect(x, y, 50, blockHeight)
+    ALPHABET.append(rect)
     
+
+    
+
+def printAlphabet():
+    for x in ALPHABET:
+        pygame.draw.rect(SCREEN, WHITE, x, 1)
 
 
 # so that each import does not call main function
