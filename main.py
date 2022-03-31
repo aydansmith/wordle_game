@@ -42,10 +42,10 @@ def main():
     add_text.add_text(SCREEN, "Wordle")
     createBoxesForGuesses()
     fillAlphabet()
+    printAlphabet()
     while True:
         pos = pygame.mouse.get_pos()
         printBoxesForGuesses()
-        printAlphabet()
         pygame.display.update()
         for event in pygame.event.get():
                 # if the user wants to quit, close pygame
@@ -188,11 +188,12 @@ def fillAlphabet():
         x = x + 40
     rect = pygame.Rect(x, y, 50, blockHeight)
     ALPHABET.append(rect)
-    
-
-    
 
 def printAlphabet():
+    counter = 0
+    for x in ALPHABET:
+        add_text.add_text_to_rectangle(SCREEN, x, ALPHABET_ORDER[counter])
+        counter = counter + 1
     for x in ALPHABET:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
