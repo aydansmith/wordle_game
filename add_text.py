@@ -17,16 +17,17 @@ def add_text(screen, text):
     textRect.center = (300, 50)
     screen.blit(text, textRect)
 
+# take rectangle object and put text in center
 def add_text_to_rectangle(screen, rect, text):
-    x = rect.x
-    y = rect.y
-    width = rect.width
-    height = rect.height
-    centerX = x + (width/2)
+    x = rect.x # get x from rect
+    y = rect.y # get y from rect
+    width = rect.width # get width
+    height = rect.height # get height
+    centerX = x + (width/2) #calculate center x and center y
     centerY = y + (height/2)
     font = pygame.font.Font('freesansbold.ttf', 15)
     text = font.render(text, True, WHITE)
     textRect = text.get_rect()
     textRect.center = (centerX, centerY)
-    screen.blit(text, textRect)
+    screen.blit(text, textRect) # put text at center of rectangle
     
