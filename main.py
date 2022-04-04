@@ -65,7 +65,7 @@ def createBoxesForGuesses():
     fillRowThree()
     fillRowFour()
     fillRowFive()
-    fillRowSix
+    fillRowSix()
 # prints the rectangles in the ROW arrays
 def printBoxesForGuesses():
     printRowOne()
