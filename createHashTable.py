@@ -1,3 +1,6 @@
+# this writes to words.txt
+# I run this once and then change the file type to .py
+
 # learned to read file from pythontutorial.net/python-basics/python-read-text-file/
 # learned to write to file from https://www.pythontutorial.net/python-basics/python-write-text-file/
 
