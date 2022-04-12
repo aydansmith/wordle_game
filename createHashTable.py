@@ -36,7 +36,7 @@ allowedGuesses = allowedGuesses + "]\n}" # end the hash table
 
 
 # open the allowed guesses and store the lines
-with open('Words/wordle-allowed-guesses.txt') as f:
+with open('Words/wordle-answers-alphabetical.txt') as f:
     lines2 = f.readlines()
     f.close()
 
@@ -57,14 +57,14 @@ for word in lines2:
     else:
         # otherwise add word to the string
         # add a comma to previous word if it is not the first word
-        if word != lines[0]:
+        if word != lines2[0]:
             allowedSolutions = allowedSolutions + "," + "'" + word.strip() + "'"
         else:
             allowedSolutions = allowedSolutions + "'" + word.strip() + "'"
 allowedSolutions = allowedSolutions + "]\n}" # end the hash table
 
 # write out the hash tables
-with open('words.txt', 'w') as f:
+with open('words.py', 'w') as f:
     f.write(allowedGuesses)
     f.write("\n\n")
     f.write(allowedSolutions)
