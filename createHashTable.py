@@ -24,14 +24,14 @@ for word in lines:
             initialFirstChar = firstChar
             allowedGuesses = allowedGuesses + "],\n   "
             allowedGuesses = allowedGuesses + "'" + firstChar + "': ["
-            allowedGuesses = allowedGuesses + word.strip()
+            allowedGuesses = allowedGuesses + "'" + word.strip() + "'"
     else:
         # otherwise add word to the string
         # add a comma to previous word if it is not the first word
         if word != lines[0]:
-            allowedGuesses = allowedGuesses + "," + word.strip()
+            allowedGuesses = allowedGuesses + "," + "'" + word.strip() + "'"
         else:
-            allowedGuesses = allowedGuesses + word.strip()
+            allowedGuesses = allowedGuesses + "'" + word.strip() + "'"
 allowedGuesses = allowedGuesses + "]\n}" # end the hash table
 
 
@@ -53,14 +53,14 @@ for word in lines2:
             initialFirstChar = firstChar
             allowedSolutions = allowedSolutions + "],\n   "
             allowedSolutions = allowedSolutions + "'" + firstChar + "': ["
-            allowedSolutions = allowedSolutions + word.strip()
+            allowedSolutions = allowedSolutions + "'" + word.strip() + "'"
     else:
         # otherwise add word to the string
         # add a comma to previous word if it is not the first word
         if word != lines[0]:
-            allowedSolutions = allowedSolutions + "," + word.strip()
+            allowedSolutions = allowedSolutions + "," + "'" + word.strip() + "'"
         else:
-            allowedSolutions = allowedSolutions + word.strip()
+            allowedSolutions = allowedSolutions + "'" + word.strip() + "'"
 allowedSolutions = allowedSolutions + "]\n}" # end the hash table
 
 # write out the hash tables
