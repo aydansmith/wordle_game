@@ -4,6 +4,12 @@
 # learned to read file from pythontutorial.net/python-basics/python-read-text-file/
 # learned to write to file from https://www.pythontutorial.net/python-basics/python-write-text-file/
 
+# words are downloaded from 
+# https://gist.github.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b#file-wordle-answers-alphabetical-txt
+# and
+# https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c
+
+
 # initial first character so that we can have hash table by starting char
 initialFirstChar = 'a'
 
