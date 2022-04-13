@@ -1,6 +1,9 @@
 import pygame
 import sys
+import random
+from scipy import rand
 import add_text
+import words
 #colors in RGB form
 
 BLACK = (0, 0, 0)
@@ -27,10 +30,10 @@ ROW_6 = []
 # alphabet appears on keyboard in this manner
 ALPHABET_ORDER = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
 ALPHABET = [] # will store rectangle objects for alphabet
-
 # main handles all the logic and passing between files
 def main():
-
+    wordGuessCount = 0
+    wordLetterCount = 0
     # following code is inspired and similar to thread on creating a grid for a snake game in pygane
     # https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame
     global SCREEN, CLOCK
@@ -46,6 +49,7 @@ def main():
     createBoxesForGuesses()
     fillAlphabet()
     printAlphabet()
+    word = getWord()
     while True:
         pos = pygame.mouse.get_pos() # gets the position of the mouse
         printBoxesForGuesses()
@@ -56,8 +60,64 @@ def main():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    letterIndex = getLetter(pos)
+                    if letterIndex != -1:
+                        letter = ALPHABET_ORDER[letterIndex]
+                        data = AddLetter(letter, wordLetterCount, wordGuessCount)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
 
+def AddLetter(letter, wordLetterCount, wordGuessCount):
+    if wordLetterCount != 5:
+        arrayToWrite = getGuessArray(wordGuessCount)
+        add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
+        wordLetterCount = wordLetterCount + 1
+    else:
+        wordLetterCount = 0
+        wordGuessCount = wordGuessCount + 1
+        arrayToWrite = getGuessArray(wordGuessCount)
+        add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
+        wordLetterCount = wordLetterCount + 1
 
+    return(wordLetterCount, wordGuessCount)
+# returns array to write to based on wordGuessCount    
+def getGuessArray(wordGuessCount):
+    if wordGuessCount == 0:
+        return ROW_1
+    elif wordGuessCount == 1:
+        return ROW_2
+    elif wordGuessCount == 2:
+        return ROW_3
+    elif wordGuessCount == 3:
+        return ROW_4
+    elif wordGuessCount == 4:
+        return ROW_5
+    elif wordGuessCount == 5:
+        return ROW_6
+
+# gets letter that was clicked on by returning index
+# returns -1 if you didn't click a letter    
+def getLetter(pos):
+    counter = 0
+    for x in ALPHABET:
+        if x.collidepoint(pos):
+            return counter
+        counter = counter+1
+    return(-1)
+    
+#generates word that will be solution
+def getWord():
+    letter = 'ENTER' # start at enter so that our loop will run
+    while letter == 'ENTER' or letter == 'BACK':
+        letter = random.randint(0,27) # generate a random starting letter
+        letter = ALPHABET_ORDER[letter]
+    letter = letter.lower()
+    length = len(words.allowedSolutions[letter]) # get number of possible words starting with that letter
+    index = random.randint(0, length-1) # generate which word index to use
+    word = words.allowedSolutions[letter][index] # get word
+    return word # return word
 # calls the functions to fill each ROW array with rectangle objects
 def createBoxesForGuesses():
     fillRowOne()
