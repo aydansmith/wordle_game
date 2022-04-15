@@ -9,7 +9,7 @@ import words
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
 YELLOW = (255, 196, 37)
-GREEN = (50, 205, 50)
+GREEN = (14, 135, 48)
 
 # height of window for pygame
 WINDOW_HEIGHT = 600
@@ -26,7 +26,7 @@ ROW_3 = []
 ROW_4 = []
 ROW_5 = []
 ROW_6 = []
-
+currentWord = []
 # alphabet appears on keyboard in this manner
 ALPHABET_ORDER = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
 ALPHABET = [] # will store rectangle objects for alphabet
@@ -47,12 +47,13 @@ def main():
     add_text.add_text(SCREEN, "Wordle")
     # call all the functions to get the boxes for guess, boxes for alphabet, and put the alphabet on the boxes
     createBoxesForGuesses()
+    printBoxesForGuesses()
     fillAlphabet()
     printAlphabet()
     word = getWord()
+    print(word)
     while True:
         pos = pygame.mouse.get_pos() # gets the position of the mouse
-        printBoxesForGuesses()
         pygame.display.update()
         for event in pygame.event.get():
                 # if the user wants to quit, close pygame
@@ -64,24 +65,44 @@ def main():
                     letterIndex = getLetter(pos)
                     if letterIndex != -1:
                         letter = ALPHABET_ORDER[letterIndex]
-                        data = AddLetter(letter, wordLetterCount, wordGuessCount)
-                        wordLetterCount = data[0]
-                        wordGuessCount = data[1]
-                        pygame.display.update()
+                        if letter != 'ENTER' and letter != 'BACK':
+                            data = AddLetter(letter, wordLetterCount, wordGuessCount)
+                            wordLetterCount = data[0]
+                            wordGuessCount = data[1]
+                            pygame.display.update()
+                        elif letter == 'ENTER':
+                            if wordLetterCount == 5:
+                                print(word)
+                                data = OnEnter(wordLetterCount, wordGuessCount, word)
+                                wordLetterCount = data[0]
+                                wordGuessCount = data[1]
+                                pygame.display.update()
 
 def AddLetter(letter, wordLetterCount, wordGuessCount):
     if wordLetterCount != 5:
         arrayToWrite = getGuessArray(wordGuessCount)
         add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
+        currentWord.append(letter)
         wordLetterCount = wordLetterCount + 1
-    else:
-        wordLetterCount = 0
-        wordGuessCount = wordGuessCount + 1
-        arrayToWrite = getGuessArray(wordGuessCount)
-        add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
-        wordLetterCount = wordLetterCount + 1
-
     return(wordLetterCount, wordGuessCount)
+
+def OnEnter(wordLetterCount, wordGuessCount, word):
+    currentArray = getGuessArray(wordGuessCount)
+    for x in range(0, 5):
+        rect = currentArray[x]
+        currentLetter = currentWord[x].lower()
+        letterInWord = word[x].lower()
+        if currentLetter == letterInWord:
+            image = pygame.display.get_surface()
+            image.fill(GREEN, rect)
+            add_text.add_text_to_rectangle(SCREEN, rect, letterInWord.upper())
+            #pygame.draw.rect(SCREEN, GREEN, rect, 1)
+            pygame.display.update()
+    wordLetterCount = 0
+    wordGuessCount = wordGuessCount + 1
+    currentWord.clear()
+    return(wordLetterCount, wordGuessCount)
+
 # returns array to write to based on wordGuessCount    
 def getGuessArray(wordGuessCount):
     if wordGuessCount == 0:
