@@ -53,7 +53,13 @@ def add_tests(screen):
         lines = f.readlines()
         f.close()
     font = pygame.font.Font('freesansbold.ttf', 10)
+    text = "Our tests consist of every main feature that we have. We also performed significant visual testing"
     y = 110
+    text = font.render(text, True, WHITE)
+    textRect = text.get_rect()
+    textRect.center = (300, y)
+    screen.blit(text, textRect)
+    y = y + 25
     for x in lines:
         x = x.strip()
         text = font.render(x, True, WHITE)

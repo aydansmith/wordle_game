@@ -100,7 +100,8 @@ def AddLetter(letter, wordLetterCount, wordGuessCount, testing):
     return(wordLetterCount, wordGuessCount)
 
 def onBack(wordLetterCount, wordGuessCount, testing):
-    add_text.clear_message(SCREEN)
+    if not testing:
+        add_text.clear_message(SCREEN)
     if wordLetterCount != 0:
         arrayToWrite = getGuessArray(wordGuessCount)
         if not testing:
@@ -154,7 +155,6 @@ def OnEnter(wordLetterCount, wordGuessCount, word):
         currentWord.clear()
         return(wordLetterCount, wordGuessCount)
     else:
-        print('not valid')
         add_text.add_message(SCREEN, "That is not a valid word")
         return(wordLetterCount, wordGuessCount)
 

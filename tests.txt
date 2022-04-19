@@ -4,3 +4,7 @@ Test 3: Lowercase Word known to be in list is marked as valid by function to che
 Test 4: Uppercase Word known to be in list is marked as valid by function to check if word is valid: PASSED
 Test 5: Uppercase Word known to not be in list is marked as not valid by function to check if word is valid: PASSED
 Test 6: Lowercase Word known to not be in list is marked as not valid by function to check if word is valid: PASSED
+Test 7: Letter known to be in wrong spot is marked as in wrong spot: PASSED
+Test 8: Letter that has appeared earlier is correctly marked as not in word: PASSED
+Test 9: Hitting BACK when you have not guessed letters results in no changes: PASSED
+Test 10: Hitting BACK when you have  guessed letters results in letter count reducing: PASSED

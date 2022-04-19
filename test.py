@@ -1,4 +1,5 @@
 from imp import reload
+from socket import AI_NUMERICSERV
 import main
 
 def test1():
@@ -48,6 +49,45 @@ def test6():
     else:
         return("Test 6: Lowercase Word known to not be in list is marked as not valid by function to check if word is valid: FAILED")
 
+def test7():
+    word = 'arise'
+    letterTried = ['f', 'u', 'm']
+    letter = 'e'
+    wrong = main.inWrongSpot(letter, letterTried, word)
+    if wrong:
+        return("Test 7: Letter known to be in wrong spot is marked as in wrong spot: PASSED")
+    else:
+        return("Test 7: Letter known to be in wrong spot is marked as in wrong spot: FAILED")
+
+def test8():
+    word = 'queue'
+    letterTried = ['q', 'u', 'e', 'u']
+    letter = 'u'
+    wrong = main.inWrongSpot(letter, letterTried, word)
+    if wrong:
+        return("Test 8: Letter that has appeared earlier is correctly marked as not in word: FAILED")
+    else:
+        return("Test 8: Letter that has appeared earlier is correctly marked as not in word: PASSED")
+
+def test9():
+    wordCount = 2
+    letterCount = 0
+    data = main.onBack(letterCount, wordCount, True)
+    if data[0] == letterCount and data[1] == wordCount:
+        return("Test 9: Hitting BACK when you have not guessed letters results in no changes: PASSED")
+    else:
+        return("Test 9: Hitting BACK when you have not guessed letters results in no changes: FAILED")
+
+def test10():
+    wordCount = 2
+    letterCount = 1
+    data = main.onBack(letterCount, wordCount, True)
+    if data[0] == letterCount-1 and data[1] == wordCount:
+        return("Test 10: Hitting BACK when you have  guessed letters results in letter count reducing: PASSED")
+    else:
+        return("Test 10: Hitting BACK when you have  guessed letters results in letter count reducing: FAILED")
+
+
     
 
 def run_tests():
@@ -59,6 +99,10 @@ def run_tests():
     tests.append(test4())
     tests.append(test5())
     tests.append(test6())
+    tests.append(test7())
+    tests.append(test8())
+    tests.append(test9())
+    tests.append(test10())
     solutions = ""
     for x in tests:
         solutions += x
