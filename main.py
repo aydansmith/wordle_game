@@ -1,3 +1,4 @@
+from itertools import count
 import pygame
 import sys
 import random
@@ -8,7 +9,7 @@ import words
 
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
-YELLOW = (255, 196, 37)
+YELLOW = (248, 222, 126)
 GREEN = (14, 135, 48)
 
 # height of window for pygame
@@ -77,8 +78,17 @@ def main():
                                 wordLetterCount = data[0]
                                 wordGuessCount = data[1]
                                 pygame.display.update()
+                            else:
+                                add_text.add_message(SCREEN, "please enter 5 letters")
+                        elif letter == 'BACK':
+                            data = onBack(wordLetterCount, wordGuessCount, False)
+                            wordLetterCount = data[0]
+                            wordGuessCount = data[1]
+                            pygame.display.update()
+
 
 def AddLetter(letter, wordLetterCount, wordGuessCount, testing):
+    add_text.clear_message(SCREEN)
     if wordLetterCount != 5:
         arrayToWrite = getGuessArray(wordGuessCount)
         if not testing:
@@ -87,22 +97,84 @@ def AddLetter(letter, wordLetterCount, wordGuessCount, testing):
         wordLetterCount = wordLetterCount + 1
     return(wordLetterCount, wordGuessCount)
 
-def OnEnter(wordLetterCount, wordGuessCount, word):
-    currentArray = getGuessArray(wordGuessCount)
-    for x in range(0, 5):
-        rect = currentArray[x]
-        currentLetter = currentWord[x].lower()
-        letterInWord = word[x].lower()
-        if currentLetter == letterInWord:
-            image = pygame.display.get_surface()
-            image.fill(GREEN, rect)
-            add_text.add_text_to_rectangle(SCREEN, rect, letterInWord.upper())
-            #pygame.draw.rect(SCREEN, GREEN, rect, 1)
-            pygame.display.update()
-    wordLetterCount = 0
-    wordGuessCount = wordGuessCount + 1
-    currentWord.clear()
+def onBack(wordLetterCount, wordGuessCount, testing):
+    add_text.clear_message(SCREEN)
+    if wordLetterCount != 0:
+        arrayToWrite = getGuessArray(wordGuessCount)
+        if not testing:
+            add_text.remove_text_from_rectangle(SCREEN, arrayToWrite[wordLetterCount - 1])
+        test = currentWord.pop()
+        wordLetterCount = wordLetterCount - 1
     return(wordLetterCount, wordGuessCount)
+        
+
+def OnEnter(wordLetterCount, wordGuessCount, word):
+    lettersRead = []
+    wordToTest = getCurrentWord()
+    if inWordList(wordToTest): 
+        currentArray = getGuessArray(wordGuessCount)
+        for x in range(0, 5):
+            rect = currentArray[x]
+            currentLetter = currentWord[x].lower()
+            letterInWord = word[x].lower()
+            if currentLetter == letterInWord:
+                image = pygame.display.get_surface()
+                image.fill(GREEN, rect)
+                add_text.add_text_to_rectangle(SCREEN, rect, letterInWord.upper())
+                lettersRead.append(currentLetter)
+                #pygame.draw.rect(SCREEN, GREEN, rect, 1)
+                pygame.display.update()
+            else:
+                isWrongSpot = inWrongSpot(currentLetter, lettersRead, word)
+                if isWrongSpot:
+                    image = pygame.display.get_surface()
+                    image.fill(YELLOW, rect)
+                    add_text.add_text_to_rectangle(SCREEN, rect, currentLetter.upper())
+                    lettersRead.append(currentLetter)
+                    #pygame.draw.rect(SCREEN, GREEN, rect, 1)
+                    pygame.display.update()
+        wordLetterCount = 0
+        wordGuessCount = wordGuessCount + 1
+        if getCurrentWord().lower() == word.lower():
+            if wordGuessCount == 1: 
+                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
+            else:
+                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
+        elif wordGuessCount == 6:
+            add_text.add_message(SCREEN, "Sorry your ran out of attempts. Better luck next time!")
+        currentWord.clear()
+        return(wordLetterCount, wordGuessCount)
+    else:
+        print('not valid')
+        add_text.add_message(SCREEN, "That is not a valid word")
+        return(wordLetterCount, wordGuessCount)
+
+def inWrongSpot(currentLetter, lettersRead, word):
+    countOfLetter = 0
+    countOfLetterGuessed = 0
+    for i in range(0, len(word)):
+        if word[i] == currentLetter:
+            countOfLetter = countOfLetter + 1
+    for i in range(0, len(lettersRead)):
+        if lettersRead[i] == currentLetter:
+            countOfLetterGuessed = countOfLetterGuessed + 1
+    if countOfLetter > countOfLetterGuessed:
+        return True
+    else:
+        return False
+    
+def inWordList(wordToTest):
+    firstLetter = wordToTest[0]
+    firstLetter = firstLetter.lower()
+    allowedSolutions = words.allowedSolutions[firstLetter]
+    allowedWords = words.allowedGuesses[firstLetter]
+    for x in allowedSolutions:
+        if x == wordToTest.lower():
+            return True
+    for x in allowedWords:
+        if x == wordToTest.lower():
+            return True
+    return False
 
 # returns array to write to based on wordGuessCount    
 def getGuessArray(wordGuessCount):
@@ -132,7 +204,7 @@ def getLetter(pos):
 #generates word that will be solution
 def getWord():
     letter = 'ENTER' # start at enter so that our loop will run
-    while letter == 'ENTER' or letter == 'BACK':
+    while letter == 'ENTER' or letter == 'BACK' or letter == 'X':
         letter = random.randint(0,27) # generate a random starting letter
         letter = ALPHABET_ORDER[letter]
     letter = letter.lower()
