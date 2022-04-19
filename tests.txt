@@ -1,0 +1,6 @@
+Test 1: Attempting to add letter when you have guessed 5 letters already: PASSED
+Test 2: Attempting to add letter when you have not guessed 5 letters already: PASSED
+Test 3: Lowercase Word known to be in list is marked as valid by function to check if word is valid: PASSED
+Test 4: Uppercase Word known to be in list is marked as valid by function to check if word is valid: PASSED
+Test 5: Uppercase Word known to not be in list is marked as not valid by function to check if word is valid: PASSED
+Test 6: Lowercase Word known to not be in list is marked as not valid by function to check if word is valid: PASSED

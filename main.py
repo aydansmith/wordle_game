@@ -141,7 +141,7 @@ def OnEnter(wordLetterCount, wordGuessCount, word):
             if wordGuessCount == 1: 
                 add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
             else:
-                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
+                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " tries!")
             pygame.display.update()
             pause(5)
             HomePage.screen()

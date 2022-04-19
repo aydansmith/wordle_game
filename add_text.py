@@ -47,4 +47,18 @@ def add_message(screen, text):
 
 def clear_message(screen):
     screen.fill(BLACK, (0, 70, 600, 20))
+
+def add_tests(screen):
+    with open('tests.txt') as f:
+        lines = f.readlines()
+        f.close()
+    font = pygame.font.Font('freesansbold.ttf', 10)
+    y = 110
+    for x in lines:
+        x = x.strip()
+        text = font.render(x, True, WHITE)
+        textRect = text.get_rect()
+        textRect.center = (300, y)
+        screen.blit(text, textRect)
+        y = y + 25
     

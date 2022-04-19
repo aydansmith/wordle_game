@@ -1,3 +1,4 @@
+from audioop import add
 from imp import reload
 from itertools import count
 import pygame
@@ -8,7 +9,7 @@ import add_text
 import words
 import main
 import test
-import display_tests
+import HomePage
 #colors in RGB form
 
 BLACK = (0, 0, 0)
@@ -36,17 +37,9 @@ def screen():
     #fill screen to black
     SCREEN.fill(BLACK)
     # adds wordle to top of screen
-    add_text.add_text(SCREEN, "Welcome To Wordle")
-    rect = pygame.Rect(150, 200, 300, 60)
-    pygame.draw.rect(SCREEN, WHITE, rect, 1)
-    rect2 = pygame.Rect(150, 290, 300, 60)
-    pygame.draw.rect(SCREEN, WHITE, rect2, 1)
-    image = pygame.display.get_surface()
-    image.fill(YELLOW, rect)
-    add_text.add_text_to_rectangle(SCREEN, rect, 'Play Wordle')
-    image = pygame.display.get_surface()
-    image.fill(YELLOW, rect2)
-    add_text.add_text_to_rectangle(SCREEN, rect2, 'Run Tests')
+    add_text.add_text(SCREEN, "Tests")
+    add_text.add_message(SCREEN, "Click anywhere to exit to home screen")
+    add_text.add_tests(SCREEN)
     #pygame.draw.rect(SCREEN, GREEN, rect, 1)
     pygame.display.update()
     while True:
@@ -59,12 +52,8 @@ def screen():
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if rect.collidepoint(pos):
-                        reload(main)
-                        main.main()
-                    if rect2.collidepoint(pos):
-                        test.run_tests()
-                        display_tests.screen()
+                    reload(HomePage)
+                    HomePage.screen()
     
 
 # so that each import does not call main function
