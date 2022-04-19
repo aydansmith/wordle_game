@@ -66,7 +66,7 @@ def main():
                     if letterIndex != -1:
                         letter = ALPHABET_ORDER[letterIndex]
                         if letter != 'ENTER' and letter != 'BACK':
-                            data = AddLetter(letter, wordLetterCount, wordGuessCount)
+                            data = AddLetter(letter, wordLetterCount, wordGuessCount, False)
                             wordLetterCount = data[0]
                             wordGuessCount = data[1]
                             pygame.display.update()
@@ -78,10 +78,11 @@ def main():
                                 wordGuessCount = data[1]
                                 pygame.display.update()
 
-def AddLetter(letter, wordLetterCount, wordGuessCount):
+def AddLetter(letter, wordLetterCount, wordGuessCount, testing):
     if wordLetterCount != 5:
         arrayToWrite = getGuessArray(wordGuessCount)
-        add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
+        if not testing:
+            add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
         currentWord.append(letter)
         wordLetterCount = wordLetterCount + 1
     return(wordLetterCount, wordGuessCount)
@@ -294,6 +295,11 @@ def printAlphabet():
     for x in ALPHABET:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+def getCurrentWord():
+    wordTemp = ""
+    for x in range(0, len(currentWord)):
+        wordTemp = wordTemp + currentWord[x]
+    return wordTemp
 
 # so that each import does not call main function
 if __name__ == "__main__":
