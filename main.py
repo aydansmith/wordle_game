@@ -1,15 +1,17 @@
 from itertools import count
+from matplotlib.pyplot import pause
 import pygame
 import sys
 import random
 from scipy import rand
 import add_text
 import words
+import HomePage
 #colors in RGB form
 
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
-YELLOW = (248, 222, 126)
+YELLOW = (201, 148, 48)
 GREEN = (14, 135, 48)
 
 # height of window for pygame
@@ -140,8 +142,15 @@ def OnEnter(wordLetterCount, wordGuessCount, word):
                 add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
             else:
                 add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
+            pygame.display.update()
+            pause(5)
+            HomePage.screen()
+
         elif wordGuessCount == 6:
             add_text.add_message(SCREEN, "Sorry your ran out of attempts. Better luck next time!")
+            pygame.display.update()
+            pause(5)
+            HomePage.screen()
         currentWord.clear()
         return(wordLetterCount, wordGuessCount)
     else:
