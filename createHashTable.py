@@ -1,5 +1,15 @@
-# this writes to words.txt
-# I run this once and then change the file type to .py
+# File Name: createHashTable.py
+# Description: this file writes to words.py. 
+# It reads list of alphabetized words and then creates two hash tables based off letter
+# One hash table is for accepted solutions and one is for accepted guesses
+# Date Created: 4/12/22
+# Date Edited: 4/12/22
+# Last Revision: Aydan added in ability to write out to python file
+# Author: Aydan Smith
+
+# only called once and it is called manually
+# this writes to words.py
+
 
 # learned to read file from pythontutorial.net/python-basics/python-read-text-file/
 # learned to write to file from https://www.pythontutorial.net/python-basics/python-write-text-file/

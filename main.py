@@ -1,3 +1,12 @@
+# File Name: main.py
+# Description: the main function is what is called to run the wordle game.
+# This file is used to run the game and contains all of the logic.
+# Any logic that requires text to be displayed uses add_text.py
+# Date Created: 4/9/22
+# Date Edited: 4/19/22
+# Last Revision: Aydan updated the onBack() function to have a testing parameter
+# Author: Aydan Smith
+
 from itertools import count
 from matplotlib.pyplot import pause
 import pygame
@@ -7,8 +16,8 @@ from scipy import rand
 import add_text
 import words
 import HomePage
-#colors in RGB form
 
+#colors in RGB form
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
 YELLOW = (201, 148, 48)
@@ -29,11 +38,17 @@ ROW_3 = []
 ROW_4 = []
 ROW_5 = []
 ROW_6 = []
+# stores the letters from the current guess
 currentWord = []
 # alphabet appears on keyboard in this manner
 ALPHABET_ORDER = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
 ALPHABET = [] # will store rectangle objects for alphabet
+
 # main handles all the logic and passing between files
+# preconditions: none
+# postconditions: pygame has exited and user game is over
+# side effects: pygame gets called
+# invariants: while loop runs til user clicks exit
 def main():
     wordGuessCount = 0
     wordLetterCount = 0
@@ -53,7 +68,9 @@ def main():
     printBoxesForGuesses()
     fillAlphabet()
     printAlphabet()
+    # gets random word for hash tables
     word = getWord()
+    # prints word to console for testing
     print(word)
     while True:
         pos = pygame.mouse.get_pos() # gets the position of the mouse
@@ -65,40 +82,59 @@ def main():
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    # get index of rectangle that was clicked
                     letterIndex = getLetter(pos)
                     if letterIndex != -1:
+                        # use that index to get the letter
                         letter = ALPHABET_ORDER[letterIndex]
+                        # if letter is not ENTER or BACK then try to add the letter and update word letter cound and word guess count
                         if letter != 'ENTER' and letter != 'BACK':
                             data = AddLetter(letter, wordLetterCount, wordGuessCount, False)
                             wordLetterCount = data[0]
                             wordGuessCount = data[1]
                             pygame.display.update()
                         elif letter == 'ENTER':
+                            # if ENTER is hit, check that you have 5 letters in the current guess
                             if wordLetterCount == 5:
-                                print(word)
-                                data = OnEnter(wordLetterCount, wordGuessCount, word)
+                                data = OnEnter(wordLetterCount, wordGuessCount, word) # call the function meant to handle enters
+                                # update counts
                                 wordLetterCount = data[0]
                                 wordGuessCount = data[1]
-                                pygame.display.update()
+                                pygame.display.update() # update the screen
                             else:
                                 add_text.add_message(SCREEN, "please enter 5 letters")
                         elif letter == 'BACK':
+                            # if BACK is hit call the function for handling BACKspaces
                             data = onBack(wordLetterCount, wordGuessCount, False)
-                            wordLetterCount = data[0]
+                            wordLetterCount = data[0] # update counts
                             wordGuessCount = data[1]
-                            pygame.display.update()
+                            pygame.display.update() # update screen
 
 
+# AddLetter handles all the logic for adding a letter to a guess
+# preconditions: letter is a char of an alphabet character, wordLetterCount is an int and wordGuessCount is an int, and testing is a boolean
+# postconditions: updated wordGuessCount and wordLetterCount get returned. Letter gets printed to screen 
+# side effects: screen gets updated
+# invariants: none
 def AddLetter(letter, wordLetterCount, wordGuessCount, testing):
-    add_text.clear_message(SCREEN)
+    add_text.clear_message(SCREEN) # clear the screen message
+    # check that you have less than 5 letters
     if wordLetterCount != 5:
+        # get array of rectangles based on word guess count
         arrayToWrite = getGuessArray(wordGuessCount)
+        # update screen if you are not testing
         if not testing:
             add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
+        # add letter to current word
         currentWord.append(letter)
-        wordLetterCount = wordLetterCount + 1
-    return(wordLetterCount, wordGuessCount)
+        wordLetterCount = wordLetterCount + 1 # update count
+    return(wordLetterCount, wordGuessCount) # return counts
 
+# OnBack handles all the logic for removing a letter
+# preconditions: wordLetterCount is an int and wordGuessCount is an int, and testing is a boolean
+# postconditions: updated wordGuessCount and wordLetterCount get returned. Letter gets removed from screen if guesses != 0
+# side effects: screen gets updated
+# invariants: none
 def onBack(wordLetterCount, wordGuessCount, testing):
     if not testing:
         add_text.clear_message(SCREEN)
@@ -110,73 +146,104 @@ def onBack(wordLetterCount, wordGuessCount, testing):
         wordLetterCount = wordLetterCount - 1
     return(wordLetterCount, wordGuessCount)
         
-
+# OnEnter handles all the logic for checking if a word is correct
+# preconditions: wordLetterCount is an int and wordGuessCount is an int, and word is a string that is the correct word
+# postconditions: updated wordGuessCount and wordLetterCount get returned. If the word is correct then the user is notified
+# side effects: screen gets updated
+# invariants: none
 def OnEnter(wordLetterCount, wordGuessCount, word):
-    lettersRead = []
-    wordToTest = getCurrentWord()
+    lettersRead = [] # store the letters that have been guessed
+    wordToTest = getCurrentWord() # get the current word
+    # make sure it is a word
     if inWordList(wordToTest): 
-        currentArray = getGuessArray(wordGuessCount)
+        currentArray = getGuessArray(wordGuessCount) # get correct rectangles
+        # loop through letter guesses
         for x in range(0, 5):
-            rect = currentArray[x]
-            currentLetter = currentWord[x].lower()
-            letterInWord = word[x].lower()
+            rect = currentArray[x] # get rectangle to update
+            currentLetter = currentWord[x].lower() # convert letter guess to lowercase for consistency
+            letterInWord = word[x].lower() # get letter at that index of actual word
+            # if letter is in right spot
             if currentLetter == letterInWord:
+                # create image so that we can fill the rectangle
                 image = pygame.display.get_surface()
-                image.fill(GREEN, rect)
-                add_text.add_text_to_rectangle(SCREEN, rect, letterInWord.upper())
-                lettersRead.append(currentLetter)
+                image.fill(GREEN, rect) # fill the rectangle gree
+                add_text.add_text_to_rectangle(SCREEN, rect, letterInWord.upper()) # add letter to colored in rectangle
+                lettersRead.append(currentLetter) # add letter to lettersRead
                 #pygame.draw.rect(SCREEN, GREEN, rect, 1)
                 pygame.display.update()
             else:
+                # otherwise check if it is the wrong spot
                 isWrongSpot = inWrongSpot(currentLetter, lettersRead, word)
                 if isWrongSpot:
+                    # if it is wrong spot then fill rectangle yellow
                     image = pygame.display.get_surface()
                     image.fill(YELLOW, rect)
-                    add_text.add_text_to_rectangle(SCREEN, rect, currentLetter.upper())
+                    add_text.add_text_to_rectangle(SCREEN, rect, currentLetter.upper()) # add letter to rectangle
                     lettersRead.append(currentLetter)
                     #pygame.draw.rect(SCREEN, GREEN, rect, 1)
                     pygame.display.update()
-        wordLetterCount = 0
-        wordGuessCount = wordGuessCount + 1
+        wordLetterCount = 0 # reset wordLetterCount
+        wordGuessCount = wordGuessCount + 1 # up your wordGuessCount
+        # check for win
         if getCurrentWord().lower() == word.lower():
             if wordGuessCount == 1: 
-                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!")
+                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " try!") # print out congrats if user won
             else:
-                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " tries!")
+                add_text.add_message(SCREEN, "Congrats, you got the word in " + str(wordGuessCount) + " tries!") # print out congrats if user won
             pygame.display.update()
-            pause(5)
-            HomePage.screen()
+            pause(5) # pause
+            HomePage.screen() # exit the game
 
         elif wordGuessCount == 6:
-            add_text.add_message(SCREEN, "Sorry your ran out of attempts. Better luck next time!")
+            add_text.add_message(SCREEN, "Sorry your ran out of attempts. Better luck next time!") # print out better luck next time if user lost
             pygame.display.update()
-            pause(5)
-            HomePage.screen()
-        currentWord.clear()
-        return(wordLetterCount, wordGuessCount)
+            pause(5) # pause
+            HomePage.screen() # exit
+        currentWord.clear() # clear current word
+        return(wordLetterCount, wordGuessCount) # return count
+    # if word is not valid, then notify the user and don't update your counts
     else:
         add_text.add_message(SCREEN, "That is not a valid word")
         return(wordLetterCount, wordGuessCount)
 
+
+# inWrongSpot handles all the logic for checking if a letter is incorrectly place
+# preconditions: currentLetter is the letter that you are checking, lettersRead is the letters already checked, word is the correct word
+# postconditions: true is returned if letter is in wrong spot, false is returned otherwise
+# side effects: none
+# invariants: none
 def inWrongSpot(currentLetter, lettersRead, word):
-    countOfLetter = 0
-    countOfLetterGuessed = 0
+    countOfLetter = 0 # store letter appearances in word
+    countOfLetterGuessed = 0 # store appearances in guess list
+    # loop through word
     for i in range(0, len(word)):
         if word[i] == currentLetter:
             countOfLetter = countOfLetter + 1
+    # loop through letters read
     for i in range(0, len(lettersRead)):
         if lettersRead[i] == currentLetter:
             countOfLetterGuessed = countOfLetterGuessed + 1
+    # if letterCount > user guesses of that letter then return true
     if countOfLetter > countOfLetterGuessed:
         return True
     else:
         return False
-    
+
+
+# inWordList handles all the logic for checking if a word is valid
+# preconditions: wordToTest is a string containing the word you want to check
+# postconditions: bool is returned to tell you if the word is valid or not
+# side effects: none
+# invariants: none
 def inWordList(wordToTest):
+    # get first letter since that is hash key 
     firstLetter = wordToTest[0]
-    firstLetter = firstLetter.lower()
+    firstLetter = firstLetter.lower() # convert to lower
+    # get allowed solutions and allowed guesses
     allowedSolutions = words.allowedSolutions[firstLetter]
     allowedWords = words.allowedGuesses[firstLetter]
+    # loop through them and check for the word
+    # if the word is found then return true
     for x in allowedSolutions:
         if x == wordToTest.lower():
             return True
@@ -185,7 +252,11 @@ def inWordList(wordToTest):
             return True
     return False
 
-# returns array to write to based on wordGuessCount    
+# getGuessArray returns the correct array of guess rectangles based on wordGuessCount
+# preconditions: wordGuessCount is an int between 0 and 5
+# postconditions: correct array gets returned
+# side effects: none
+# invariants: none
 def getGuessArray(wordGuessCount):
     if wordGuessCount == 0:
         return ROW_1
@@ -200,6 +271,11 @@ def getGuessArray(wordGuessCount):
     elif wordGuessCount == 5:
         return ROW_6
 
+# getLetter returns the correct letter based on position of click
+# preconditions: pos is (x,y) coordinate
+# postconditions: correct letter is returned or -1 is returned if not a letter
+# side effects: none
+# invariants: none
 # gets letter that was clicked on by returning index
 # returns -1 if you didn't click a letter    
 def getLetter(pos):
@@ -209,7 +285,12 @@ def getLetter(pos):
             return counter
         counter = counter+1
     return(-1)
-    
+
+# getWord returns the word that will be the solution
+# preconditions: words.py is formatted correctly
+# postconditions: word of the game is returned
+# side effects: none
+# invariants: none
 #generates word that will be solution
 def getWord():
     letter = 'ENTER' # start at enter so that our loop will run
@@ -221,6 +302,12 @@ def getWord():
     index = random.randint(0, length-1) # generate which word index to use
     word = words.allowedSolutions[letter][index] # get word
     return word # return word
+
+# createBoxesForGuesses calls all the functions to fill the ROW arrays
+# preconditions: none
+# postconditions: boxes are filled with Rect objects
+# side effects: none
+# invariants: none
 # calls the functions to fill each ROW array with rectangle objects
 def createBoxesForGuesses():
     fillRowOne()
@@ -229,6 +316,12 @@ def createBoxesForGuesses():
     fillRowFour()
     fillRowFive()
     fillRowSix()
+
+# printBoxesForGuesses calls all the functions to print the ROW arrays
+# preconditions: boxes are already filled
+# postconditions: boxes are printed out
+# side effects: none
+# invariants: none
 # prints the rectangles in the ROW arrays
 def printBoxesForGuesses():
     printRowOne()
@@ -238,6 +331,11 @@ def printBoxesForGuesses():
     printRowFive()
     printRowSix()
 
+# fillRowOne creates rect objects for row 1
+# preconditions: none
+# postconditions: array is filled with rect objects
+# side effects: none
+# invariants: none
 # fills ROW_1 array with rectangles
 def fillRowOne():
     blockSize = 40 # set blcok size
@@ -249,6 +347,11 @@ def fillRowOne():
         ROW_1.append(rect) # add rectangle to row
         x = x + 50 # update x
 
+# fillRowTwo creates rect objects for row 2
+# preconditions: none
+# postconditions: array is filled with rect objects
+# side effects: none
+# invariants: none
 # fills ROW_2 array with rectangles
 def fillRowTwo():
     blockSize = 40 # set blcok size
@@ -260,6 +363,11 @@ def fillRowTwo():
         ROW_2.append(rect) # add rectangle to row
         x = x + 50 # update x
 
+# fillRowThree creates rect objects for row 3
+# preconditions: none
+# postconditions: array is filled with rect objects
+# side effects: none
+# invariants: none
 # fills ROW_3 array with rectangles
 def fillRowThree():
     blockSize = 40 # set blcok size
@@ -271,6 +379,11 @@ def fillRowThree():
         ROW_3.append(rect) # add rectangle to row
         x = x + 50 # update x
 
+# fillRowFour creates rect objects for row 4
+# preconditions: none
+# postconditions: array is filled with rect objects
+# side effects: none
+# invariants: none
 # fills ROW_4 array with rectangles
 def fillRowFour():
     blockSize = 40 # set blcok size
@@ -282,6 +395,11 @@ def fillRowFour():
         ROW_4.append(rect) # add rectangle to row
         x = x + 50 # update x
 
+# fillRowFive creates rect objects for row 5
+# preconditions: none
+# postconditions: array is filled with rect objects
+# side effects: none
+# invariants: none
 # fills ROW_5 array with rectangles
 def fillRowFive():
     blockSize = 40 # set blcok size
@@ -293,6 +411,11 @@ def fillRowFive():
         ROW_5.append(rect) # add rectangle to row
         x = x + 50 # update x
 
+# fillRowSix creates rect objects for row 6
+# preconditions: none
+# postconditions: array is filled with rect objects
+# side effects: none
+# invariants: none
 # fills ROW_6 array with rectangles
 def fillRowSix():
     blockSize = 40 # set blcok size
@@ -304,36 +427,73 @@ def fillRowSix():
         ROW_6.append(rect) # add rectangle to row
         x = x + 50 # update x
 
+# printRowOne prints rect objects for row 1
+# preconditions: none
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 def printRowOne():
     # prints each rectangle in row 1 array
     for x in ROW_1:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+
+# printRowTwo prints rect objects for row 2
+# preconditions: none
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 def printRowTwo():
     # prints each rectangle in row 2 array
     for x in ROW_2:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+# printRowThree prints rect objects for row 3
+# preconditions: none
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 def printRowThree():
     # prints each rectangle in row 3 array
     for x in ROW_3:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+# printRowFour prints rect objects for row 4
+# preconditions: none
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 def printRowFour():
     # prints each rectangle in row 4 array
     for x in ROW_4:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+# printRowFive prints rect objects for row 5
+# preconditions: none
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 def printRowFive():
     # prints each rectangle in row 5 array
     for x in ROW_5:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+
+# printRowSix prints rect objects for row 6
+# preconditions: none
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 def printRowSix():
     # prints each rectangle in row 6 array
     for x in ROW_6:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+# fillAlphabet fills alphabet array with rect objects 
+# preconditions: none
+# postconditions: array of rect objects is stored for alphabet
+# side effects: none
+# invariants: none
 # creates the blocks for the alphabet boxes
 def fillAlphabet():
     blockWidth = 30 # set block width
@@ -367,6 +527,11 @@ def fillAlphabet():
     rect = pygame.Rect(x, y, 50, blockHeight)
     ALPHABET.append(rect)
 
+# printAlphabet prints rect objects for alphabet
+# preconditions: alphabet exists
+# postconditions: array of rect objects is displayed to screen
+# side effects: none
+# invariants: none
 # prints all the alphabet characters that are stored in order in ALPHABET_ORDER
 def printAlphabet():
     counter = 0
@@ -376,6 +541,11 @@ def printAlphabet():
     for x in ALPHABET:
         pygame.draw.rect(SCREEN, WHITE, x, 1)
 
+# getCurrentWord returns the string version of the chars stored in currentWord array
+# preconditions: none
+# postconditions: string of current guess is returned
+# side effects: none
+# invariants: none
 def getCurrentWord():
     wordTemp = ""
     for x in range(0, len(currentWord)):
