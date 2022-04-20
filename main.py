@@ -50,8 +50,8 @@ ALPHABET = [] # will store rectangle objects for alphabet
 # side effects: pygame gets called
 # invariants: while loop runs til user clicks exit
 def main():
-    wordGuessCount = 0
-    wordLetterCount = 0
+    wordGuessCount = 0 # how many guesses the user has tried
+    wordLetterCount = 0 # how many letters have been guessed for the most recent
     # following code is inspired and similar to thread on creating a grid for a snake game in pygane
     # https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame
     global SCREEN, CLOCK
@@ -102,7 +102,7 @@ def main():
                                 wordGuessCount = data[1]
                                 pygame.display.update() # update the screen
                             else:
-                                add_text.add_message(SCREEN, "please enter 5 letters")
+                                add_text.add_message(SCREEN, "that is not a five letter word")
                         elif letter == 'BACK':
                             # if BACK is hit call the function for handling BACKspaces
                             data = onBack(wordLetterCount, wordGuessCount, False)
@@ -257,6 +257,7 @@ def inWordList(wordToTest):
 # postconditions: correct array gets returned
 # side effects: none
 # invariants: none
+# return -1 if it is an invalid wordGuessCount
 def getGuessArray(wordGuessCount):
     if wordGuessCount == 0:
         return ROW_1
@@ -270,8 +271,10 @@ def getGuessArray(wordGuessCount):
         return ROW_5
     elif wordGuessCount == 5:
         return ROW_6
+    else:
+        return(-1)
 
-# getLetter returns the correct letter based on position of click
+# getLetter returns the index for the correct letter based on position of click
 # preconditions: pos is (x,y) coordinate
 # postconditions: correct letter is returned or -1 is returned if not a letter
 # side effects: none
