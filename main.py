@@ -319,7 +319,23 @@ def onBack(wordLetterCount, wordGuessCount, testing):
         test = currentWord.pop()
         wordLetterCount = wordLetterCount - 1
     return(wordLetterCount, wordGuessCount)
-        
+
+# changeLetter handles all the logic for changing the color of a square on the keyboard
+# preconditions: letter is the current letter and color is an RGB code
+# postconditions: keyboard letter for letter gets changed to the color specified
+# side effects: screen gets updated
+# invariants: none
+def changeLetter(letter, color):
+    letter = letter.upper()
+    counter = 0
+    for x in ALPHABET_ORDER:   
+        if x == letter:
+            break
+        counter += 1
+    rectangle = ALPHABET[counter]
+    image = pygame.display.get_surface()
+    image.fill(color, rectangle)
+    add_text.add_text_to_rectangle(SCREEN, rectangle, letter) 
 # OnEnter handles all the logic for checking if a word is correct
 # preconditions: wordLetterCount is an int and wordGuessCount is an int, and word is a string that is the correct word
 # postconditions: updated wordGuessCount and wordLetterCount get returned. If the word is correct then the user is notified
@@ -343,6 +359,7 @@ def OnEnter(wordLetterCount, wordGuessCount, word):
                 image.fill(GREEN, rect) # fill the rectangle gree
                 add_text.add_text_to_rectangle(SCREEN, rect, letterInWord.upper()) # add letter to colored in rectangle
                 lettersRead.append(currentLetter) # add letter to lettersRead
+                changeLetter(currentLetter, GREEN)
                 #pygame.draw.rect(SCREEN, GREEN, rect, 1)
                 pygame.display.update()
             else:
@@ -354,6 +371,7 @@ def OnEnter(wordLetterCount, wordGuessCount, word):
                     image.fill(YELLOW, rect)
                     add_text.add_text_to_rectangle(SCREEN, rect, currentLetter.upper()) # add letter to rectangle
                     lettersRead.append(currentLetter)
+                    changeLetter(currentLetter, YELLOW)
                     #pygame.draw.rect(SCREEN, GREEN, rect, 1)
                     pygame.display.update()
         wordLetterCount = 0 # reset wordLetterCount
