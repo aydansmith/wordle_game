@@ -328,11 +328,12 @@ def onBack(wordLetterCount, wordGuessCount, testing):
 def changeLetter(letter, color):
     letter = letter.upper()
     counter = 0
+    # get letter index
     for x in ALPHABET_ORDER:   
         if x == letter:
             break
         counter += 1
-    rectangle = ALPHABET[counter]
+    rectangle = ALPHABET[counter] 
     image = pygame.display.get_surface()
     image.fill(color, rectangle)
     add_text.add_text_to_rectangle(SCREEN, rectangle, letter) 
