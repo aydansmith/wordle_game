@@ -81,6 +81,179 @@ def main():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    # if the key is an 'A' then call AddLetter with that
+                    if event.key == pygame.K_a:
+                        data = AddLetter('a', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_b:
+                        # if the key is an 'B' then call AddLetter with that
+                        data = AddLetter('b', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_c:
+                        # if the key is an 'C' then call AddLetter with that
+                        data = AddLetter('c', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_d:
+                        # if the key is an 'D' then call AddLetter with that
+                        data = AddLetter('d', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_e:
+                        # if the key is an 'E' then call AddLetter with that
+                        data = AddLetter('e', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_f:
+                        # if the key is an 'F' then call AddLetter with that
+                        data = AddLetter('f', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_g:
+                        # if the key is an 'G' then call AddLetter with that
+                        data = AddLetter('g', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_h:
+                        # if the key is an 'H' then call AddLetter with that
+                        data = AddLetter('h', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_i:
+                        # if the key is an 'I' then call AddLetter with that
+                        data = AddLetter('i', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_j:
+                        # if the key is an 'J' then call AddLetter with that
+                        data = AddLetter('j', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_k:
+                        # if the key is an 'K' then call AddLetter with that
+                        data = AddLetter('k', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_l:
+                        # if the key is an 'L' then call AddLetter with that
+                        data = AddLetter('l', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_m:
+                        # if the key is an 'M' then call AddLetter with that
+                        data = AddLetter('m', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_n:
+                        # if the key is an 'N' then call AddLetter with that
+                        data = AddLetter('n', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_o:
+                        # if the key is an 'O' then call AddLetter with that
+                        data = AddLetter('o', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_p:
+                        # if the key is an 'P' then call AddLetter with that
+                        data = AddLetter('p', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_q:
+                        # if the key is an 'Q' then call AddLetter with that
+                        data = AddLetter('q', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_r:
+                        # if the key is an 'R' then call AddLetter with that
+                        data = AddLetter('r', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_s:
+                        # if the key is an 'S' then call AddLetter with that
+                        data = AddLetter('s', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_t:
+                        # if the key is an 'T' then call AddLetter with that
+                        data = AddLetter('t', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_u:
+                        # if the key is an 'U' then call AddLetter with that
+                        data = AddLetter('u', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_v:
+                        # if the key is an 'V' then call AddLetter with that
+                        data = AddLetter('v', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_w:
+                        # if the key is an 'W' then call AddLetter with that
+                        data = AddLetter('w', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_x:
+                        # if the key is an 'X' then call AddLetter with that
+                        data = AddLetter('x', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_y:
+                        # if the key is an 'Y' then call AddLetter with that
+                        data = AddLetter('y', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_z:
+                        # if the key is an 'Z' then call AddLetter with that
+                        data = AddLetter('z', wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0]
+                        wordGuessCount = data[1]
+                        pygame.display.update()
+                    if event.key == pygame.K_RETURN:
+                        # if ENTER is hit, check that you have 5 letters in the current guess
+                        if wordLetterCount == 5:
+                            data = OnEnter(wordLetterCount, wordGuessCount, word) # call the function meant to handle enters
+                            # update counts
+                            wordLetterCount = data[0]
+                            wordGuessCount = data[1]
+                            pygame.display.update() # update the screen
+                        else:
+                            add_text.add_message(SCREEN, "that is not a five letter word")
+                    if event.key == pygame.K_BACKSPACE:
+                        # if BACK is hit call the function for handling BACKspaces
+                        data = onBack(wordLetterCount, wordGuessCount, False)
+                        wordLetterCount = data[0] # update counts
+                        wordGuessCount = data[1]
+                        pygame.display.update() # update screen
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     # get index of rectangle that was clicked
                     letterIndex = getLetter(pos)
@@ -109,6 +282,7 @@ def main():
                             wordLetterCount = data[0] # update counts
                             wordGuessCount = data[1]
                             pygame.display.update() # update screen
+                        
 
 
 # AddLetter handles all the logic for adding a letter to a guess
@@ -124,7 +298,7 @@ def AddLetter(letter, wordLetterCount, wordGuessCount, testing):
         arrayToWrite = getGuessArray(wordGuessCount)
         # update screen if you are not testing
         if not testing:
-            add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter)
+            add_text.add_text_to_rectangle(SCREEN, arrayToWrite[wordLetterCount], letter.upper())
         # add letter to current word
         currentWord.append(letter)
         wordLetterCount = wordLetterCount + 1 # update count
