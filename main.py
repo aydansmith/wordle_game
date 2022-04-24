@@ -22,6 +22,7 @@ BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
 YELLOW = (201, 148, 48)
 GREEN = (14, 135, 48)
+GRAY = (105, 105, 105)
 
 # height of window for pygame
 WINDOW_HEIGHT = 600
@@ -374,6 +375,15 @@ def OnEnter(wordLetterCount, wordGuessCount, word):
                     add_text.add_text_to_rectangle(SCREEN, rect, currentLetter.upper()) # add letter to rectangle
                     lettersRead.append(currentLetter)
                     changeLetter(currentLetter, YELLOW)
+                    #pygame.draw.rect(SCREEN, GREEN, rect, 1)
+                    pygame.display.update()
+                else:
+                    # if it is not in wrong spot then fill rectangle gray
+                    image = pygame.display.get_surface()
+                    image.fill(GRAY, rect)
+                    add_text.add_text_to_rectangle(SCREEN, rect, currentLetter.upper()) # add letter to rectangle
+                    lettersRead.append(currentLetter)
+                    changeLetter(currentLetter, GRAY)
                     #pygame.draw.rect(SCREEN, GREEN, rect, 1)
                     pygame.display.update()
         wordLetterCount = 0 # reset wordLetterCount
