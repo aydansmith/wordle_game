@@ -82,6 +82,7 @@ def main():
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
+                    # based on https://www.geeksforgeeks.org/how-to-get-keyboard-input-in-pygame/
                     # if the key is an 'A' then call AddLetter with that
                     if event.key == pygame.K_a:
                         data = AddLetter('a', wordLetterCount, wordGuessCount, False)
